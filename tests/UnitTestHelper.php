@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c)2013-2013 heiglandreas
+ * Copyright (c)2015-2015 heiglandreas
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,22 +21,35 @@
  * THE SOFTWARE.
  *
  * @author    Andreas Heigl<andreas@heigl.org>
- * @copyright ©2013-2013 Andreas Heigl
+ * @copyright ©2015-2015 Andreas Heigl
  * @license   http://www.opesource.org/licenses/mit-license.php MIT-License
  * @version   0.0
- * @since     02.04.13
+ * @since     02.03.15
  * @link      https://github.com/heiglandreas/
  */
 
-ini_set('date.timezone', 'Europe/Berlin');
-ini_set('memory_limit', '512M');
+namespace Org_Heigl;
 
-// Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(
-    realpath(__DIR__ . '/../lib'),
-    get_include_path(),
-)));
-
-mb_internal_encoding('UTF-8');
-require_once 'vendor/autoload.php';
-require_once __DIR__ . '/UnitTestHelper.php';
+class UnitTestHelper
+{
+    /**
+     * Access protected or private methods
+     *
+     * use the following code to access any protected or private class method
+     * $obj = new MyClass();
+     * $method = UnitTestHelper::getMethod($obj, 'nameOfMethod');
+     * $result = $method->invoke('your',method,array('arguments'));
+     *
+     * @param Object|string $obj
+     * @param string $name
+     *
+     * @return method
+     */
+    public static function getMethod($obj, $name)
+    {
+        $class = new \ReflectionClass($obj);
+        $method = $class->getMethod($name);
+        $method->setAccessible(true);
+        return $method;
+    }
+}
