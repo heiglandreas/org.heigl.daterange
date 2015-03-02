@@ -172,4 +172,12 @@ class DateRangeFormatterTest extends \PHPUnit_Framework_TestCase
 			array('m/d/Y', '12.2.2014', '13.2.2014', '02/12/ - 02/13/2014'),
 		);
 	}
+
+	public function testSettingSeparator()
+	{
+		$formatter = new DateRangeFormatter();
+		$this->assertAttributeEquals(' - ', 'combine', $formatter);
+		$this->assertSame($formatter, $formatter->setSeparator(' until '));
+		$this->assertAttributeEquals(' until ', 'combine', $formatter);
+	}
 }

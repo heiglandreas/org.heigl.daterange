@@ -19,9 +19,9 @@ with the start-date and the end date as parameters.
 Simple example:
 
     <?php
-    use Org_Heigl\DateRange
+    use Org_Heigl\DateRangeFormatter
 
-    $dateRange = new DateRange();
+    $dateRange = new DateRangeFormatter();
     $dateRange->setFormat('d.m.Y');
     $dateRange->setSeparator(' - ');
     echo $dateRange->getDateRange(new \DateTime('12.3.2015'), new \DateTime('13.4.2015'));
@@ -30,8 +30,8 @@ Simple example:
 More complex example:
 
     <?php
-    use Org_Heigl\DateRange
-    $dateRange = new DateRange();
+    use Org_Heigl\DateRangeFormatter
+    $dateRange = new DateRangeFormatter();
     $dateRange->setFormat('m/d/Y');
     $dateRange->setSeparator(' - ');
     echo $dateRange->getDateRange(new \DateTime('12.3.2015'), new \DateTime('13.3.2015'));

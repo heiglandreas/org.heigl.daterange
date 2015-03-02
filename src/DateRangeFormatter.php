@@ -86,6 +86,20 @@ class DateRangeFormatter
 		return $this;
 	}
 
+	/**
+	 * Set the separator
+	 *
+	 * @param string $separator
+	 *
+	 * @return self
+	 */
+	public function setSeparator($separator)
+	{
+		$this->combine = $separator;
+
+		return $this;
+	}
+
 	public function setTestableParts()
 	{
 		$this->testableParts = array();
