@@ -13,8 +13,8 @@ before_script:
  - ./.travis.install.sh
 
 script:
+ - ./vendor/bin/phpcs --standard=PSR2
  - ./vendor/bin/phpunit --configuration=phpunit.travis.xml
- - ./vendow/bin/phpcs
 
 addons:
  code_climate:
@@ -27,7 +27,4 @@ matrix:
       - php: 7.0
 
 after_script:
- - ./vendor/bin/test-reporter --stdout > codeclimate.json
- - 'curl -X POST -d @codeclimate.json -H "Content-Type: application/json" -H "User-Agent: Code Climate (PHP Test Reporter v1.0.1-dev)"  https://codeclimate.com/test_reports'
- - wget https://scrutinizer-ci.com/ocular.phar
- - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+ - ./.travis.after.sh

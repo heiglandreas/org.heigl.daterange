@@ -7,7 +7,7 @@ This small library tries to ease printing of date-ranges.
 Installation is easy via composer. Simply type this in your terminal to add the
 DateRange-Library to your ```composer.conf```-file:
 
-    ```composer require org_heigl/daterange```
+    composer require org_heigl/daterange
 
 
 ## Usage
@@ -18,6 +18,7 @@ with the start-date and the end date as parameters.
 
 Simple example:
 
+    ```php
     <?php
     use Org_Heigl\DateRangeFormatter
 
@@ -26,9 +27,11 @@ Simple example:
     $dateRange->setSeparator(' - ');
     echo $dateRange->getDateRange(new \DateTime('12.3.2015'), new \DateTime('13.4.2015'));
     // Will print: 12.3. - 13.4.2014
+    ``
 
 More complex example:
 
+    ```php
     <?php
     use Org_Heigl\DateRangeFormatter
     $dateRange = new DateRangeFormatter();
@@ -36,5 +39,4 @@ More complex example:
     $dateRange->setSeparator(' - ');
     echo $dateRange->getDateRange(new \DateTime('12.3.2015'), new \DateTime('13.3.2015'));
     // Will print: 3/12/ - 3/13/2014
-
-
+    ```
