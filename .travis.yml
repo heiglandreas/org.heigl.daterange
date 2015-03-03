@@ -19,7 +19,7 @@ script:
 addons:
  code_climate:
   repo_token:
-    secure:
+    secure: "cj3x8KfcI9lh4dhQatojQIdZP5cOk2sJBwp3ngmOvdo3TMsrNtJPm426ZHdP/HunOrp3hP2BK6of7gBsXdJSfhRosuViwL1w744BZGAIwt6uOcuvQaJ93iv9yqiNMW43Fk+m2iR7UB/FFTm58W8N8tmAisibO+bhsZxDNyc5Ii8="
 
 matrix:
   fast_finish : true
