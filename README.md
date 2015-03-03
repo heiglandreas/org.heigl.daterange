@@ -5,6 +5,7 @@ This small library tries to ease printing of date-ranges.
 [![Build Status](https://travis-ci.org/heiglandreas/org.heigl.daterange.svg?branch=master)](https://travis-ci.org/heiglandreas/org.heigl.daterange)
 [![Code Climate](https://codeclimate.com/github/heiglandreas/org.heigl.daterange/badges/gpa.svg)](https://codeclimate.com/github/heiglandreas/org.heigl.daterange)
 [![Test Coverage](https://codeclimate.com/github/heiglandreas/org.heigl.daterange/badges/coverage.svg)](https://codeclimate.com/github/heiglandreas/org.heigl.daterange)
+[![Coverage Status](https://coveralls.io/repos/heiglandreas/org.heigl.daterange/badge.svg?branch=master)](https://coveralls.io/r/heiglandreas/org.heigl.daterange?branch=master)
 
 ## Installation
 
