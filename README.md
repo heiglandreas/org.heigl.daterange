@@ -30,8 +30,10 @@ $dateRange = new DateRangeFormatter();
 $dateRange->setFormat('d.m.Y');
 $dateRange->setSeparator(' - ');
 echo $dateRange->getDateRange(new \DateTime('12.3.2015'), new \DateTime('13.4.2015'));
-// Will print: 12.3. - 13.4.2014
-``
+// Will print: 12.03. - 13.04.2014
+echo $dateRange->getDateRange(new \DateTime('12.3.2015'), new \DateTime('13.3.2015'));
+// Will print: 12. - 13.03.2014
+```
 
 More complex example:
 
