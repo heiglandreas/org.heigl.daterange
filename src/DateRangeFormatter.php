@@ -67,6 +67,8 @@ class DateRangeFormatter
 
     protected $combine = ' - ';
 
+    protected $stripFirstPart = false;
+
     /**
      * Set the output-format
      *
@@ -112,6 +114,13 @@ class DateRangeFormatter
                 $this->testableParts[] = $value;
             }
         }
+    }
+
+    public function removeSeparator($strip)
+    {
+        $this->stripFirstPart = (boolean) $strip;
+
+        return $this;
     }
 
     protected function getDiffPoint(DateTimeInterface $start, DateTimeInterface $end)
@@ -164,12 +173,35 @@ class DateRangeFormatter
         if (! $arrays[1]) {
             return $start->format($arrays[0]);
         }
+        $first = $arrays[0];
+        if ($this->stripFirstPart) {
+            $first = $this->strip($arrays[0]);
+        }
         $string = '';
-        $string .= $start->format($arrays[0]);
+        $string .= $start->format(trim($first));
         $string .= $this->combine;
         $string .= $end->format($arrays[0]);
         $string .= $end->format($arrays[1]);
-        
+
         return $string;
+    }
+
+    /**
+     * Strip everything from the end of the string to the last date-relevant char
+     *
+     * @param $dateString
+     *
+     * @return string
+     */
+    protected function strip($dateString)
+    {
+        $regEx = '/(?<!\\\\)[dDjlNSwzWFmMntLoYyaABgGhHisueIOPTZcrU]/';
+        if (! preg_match_all($regEx, $dateString, $returns, PREG_OFFSET_CAPTURE)) {
+            return $dateString;
+        }
+
+        $last = count($returns[0]) - 1;
+
+        return substr($dateString, 0, $returns[0][$last][1] + 1);
     }
 }
