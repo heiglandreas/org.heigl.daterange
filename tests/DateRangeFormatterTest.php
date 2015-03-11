@@ -135,6 +135,7 @@ class DateRangeFormatterTest extends \PHPUnit_Framework_TestCase
             array('d.m.Y', DateRangeFormatter::MONTH, array('d.m.','Y')),
             array('d.m.Y', DateRangeFormatter::YEAR, array('d.m.Y','')),
             array('m/d/Y', DateRangeFormatter::DAY, array('m/d/','Y')),
+            array('M dS Y', DateRangeFormatter::DAY, array('M dS ','Y')),
         );
     }
 
@@ -157,10 +158,11 @@ class DateRangeFormatterTest extends \PHPUnit_Framework_TestCase
      * @param $result
      * @dataProvider gettingDateDiffProvider
      */
-    public function testGettingDateDiff($format, $start, $end, $result)
+    public function testGettingDateDiff($format, $start, $end, $result, $strip = false)
     {
         $formatter = new DateRangeFormatter();
         $formatter->setFormat($format);
+        $formatter->removeSeparator($strip);
 
         $this->assertEquals($result, $formatter->getDateRange(new \DateTime($start), new \DateTime($end)));
     }
@@ -168,9 +170,11 @@ class DateRangeFormatterTest extends \PHPUnit_Framework_TestCase
     public function gettingDateDiffProvider()
     {
         return array(
-            array('d.m.Y', '12.2.2014', '13.2.2014', '12. - 13.02.2014'),
-            array('m/d/Y', '12.2.2014', '13.2.2014', '02/12/ - 02/13/2014'),
-            array('d.m.Y', '12.2.2014', '12.2.2014', '12.02.2014'),
+            array('d.m.Y' , '12.2.2014', '13.2.2014', '12. - 13.02.2014'),
+            array('m/d/Y' , '12.2.2014', '13.2.2014', '02/12/ - 02/13/2014'),
+            array('m/d/Y' , '12.2.2014', '13.2.2014', '02/12 - 02/13/2014', true),
+            array('M dS Y', '12.2.2014', '13.2.2014', 'Feb 12th - Feb 13th 2014'),
+            array('d.m.Y' , '12.2.2014', '12.2.2014', '12.02.2014'),
         );
     }
 
