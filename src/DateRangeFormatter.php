@@ -195,7 +195,8 @@ class DateRangeFormatter
      */
     protected function strip($dateString)
     {
-        if (! preg_match_all('/(?<!\\\\)[dDjlNSwzWFmMntLoYyaABgGhHisueIOPTZcrU]/', $dateString, $returns, PREG_OFFSET_CAPTURE)) {
+        $regEx = '/(?<!\\\\)[dDjlNSwzWFmMntLoYyaABgGhHisueIOPTZcrU]/';
+        if (! preg_match_all($regEx, $dateString, $returns, PREG_OFFSET_CAPTURE)) {
             return $dateString;
         }
 
