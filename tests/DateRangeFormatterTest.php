@@ -31,6 +31,8 @@
 namespace Org_Heigl\DateRangeTest;
 
 use Org_Heigl\DateRange\DateRangeFormatter;
+use Org_Heigl\DateRange\Filter\RemoveEverythingAfterLastDateStringFilter;
+use Org_Heigl\DateRange\Filter\TrimFilter;
 use Org_Heigl\UnitTestHelper;
 
 class DateRangeFormatterTest extends \PHPUnit_Framework_TestCase
@@ -157,10 +159,13 @@ class DateRangeFormatterTest extends \PHPUnit_Framework_TestCase
      * @param $result
      * @dataProvider gettingDateDiffProvider
      */
-    public function testGettingDateDiff($format, $start, $end, $result)
+    public function testGettingDateDiff($format, $start, $end, $result, $filters = array())
     {
         $formatter = new DateRangeFormatter();
         $formatter->setFormat($format);
+        foreach ($filters as $filter) {
+            $formatter->addFilter($filter, DateRangeFormatter::FILTER_FIRST_DIFF);
+        }
 
         $this->assertEquals($result, $formatter->getDateRange(new \DateTime($start), new \DateTime($end)));
     }
@@ -168,9 +173,17 @@ class DateRangeFormatterTest extends \PHPUnit_Framework_TestCase
     public function gettingDateDiffProvider()
     {
         return array(
-            array('d.m.Y', '12.2.2014', '13.2.2014', '12. - 13.02.2014'),
-            array('m/d/Y', '12.2.2014', '13.2.2014', '02/12/ - 02/13/2014'),
-            array('d.m.Y', '12.2.2014', '12.2.2014', '12.02.2014'),
+            array('d.m.Y' , '12.2.2014', '13.2.2014', '12. - 13.02.2014'),
+            array('m/d/Y' , '12.2.2014', '13.2.2014', '02/12/ - 02/13/2014'),
+            array(
+                'm/d/Y' ,
+                '12.2.2014',
+                '13.2.2014',
+                '02/12 - 02/13/2014',
+                array(new RemoveEverythingAfterLastDateStringFilter())
+            ),
+            array('M dS Y', '12.2.2014', '13.2.2014', 'Feb 12th - Feb 13th 2014', array(new TrimFilter())),
+            array('d.m.Y' , '12.2.2014', '12.2.2014', '12.02.2014'),
         );
     }
 
@@ -180,5 +193,21 @@ class DateRangeFormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals(' - ', 'combine', $formatter);
         $this->assertSame($formatter, $formatter->setSeparator(' until '));
         $this->assertAttributeEquals(' until ', 'combine', $formatter);
+    }
+
+    public function testFilterWhenFilterIsNotArray()
+    {
+        $formatter = new DateRangeFormatter();
+        $formatter->setFormat('d.m.Y');
+
+        $class = new \ReflectionClass('Org_Heigl\DateRange\DateRangeFormatter');
+        $property = $class->getProperty('filter');
+        $property->setAccessible(true);
+        $property->setValue($formatter, array(DateRangeFormatter::FILTER_COMPLETE => 'foo'));
+
+        $this->assertEquals('12.03.2014', $formatter->getDateRange(
+            new \DateTime('12.03.2014'),
+            new \DateTime('12.3.2014')
+        ));
     }
 }
