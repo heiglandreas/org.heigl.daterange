@@ -40,6 +40,11 @@ class DateRangeFormatter
     const WEEK = 2;
     const DAY = 3;
 
+    const FILTER_COMPLETE = 'filter_complete';
+    const FILTER_FIRST_DIFF = 'filter_first_diff';
+    const FILTER_SECOND_DIFF = 'filter_second_diff';
+    const FILTER_SAME = 'filter_same';
+
     private $checks = array(
         'd' => self::DAY,
         'D' => self::DAY,
@@ -66,6 +71,8 @@ class DateRangeFormatter
     );
 
     protected $combine = ' - ';
+
+    protected $filter = array();
 
     /**
      * Set the output-format
@@ -162,14 +169,39 @@ class DateRangeFormatter
     {
         $arrays = $this->splitFormat($this->getDiffPoint($start, $end));
         if (! $arrays[1]) {
-            return $start->format($arrays[0]);
+            return $this->applyFilter($start->format($arrays[0]), self::FILTER_COMPLETE);
         }
+
         $string = '';
-        $string .= $start->format($arrays[0]);
+        $string .= $start->format($this->applyFilter($arrays[0], self::FILTER_FIRST_DIFF));
         $string .= $this->combine;
-        $string .= $end->format($arrays[0]);
-        $string .= $end->format($arrays[1]);
-        
+        $string .= $end->format($this->applyFilter($arrays[0], self::FILTER_SECOND_DIFF));
+        $string .= $end->format($this->applyFilter($arrays[1], self::FILTER_SAME));
+
+        return $string;
+    }
+
+    public function addFilter(DateRangeFilterInterface $filter, $type)
+    {
+        $this->filter[$type][] = $filter;
+
+        return $this;
+    }
+
+    public function applyFilter($string, $type)
+    {
+        if (! isset($this->filter[$type])) {
+            return $string;
+        }
+
+        if (! is_array($this->filter[$type])) {
+            return $string;
+        }
+
+        foreach ($this->filter[$type] as $filter) {
+            $string = $filter->filter($string);
+        }
+
         return $string;
     }
 }
