@@ -18,7 +18,7 @@
     "require-dev" : {
         "codeclimate/php-test-reporter": "dev-master",
         "squizlabs/php_codesniffer": "~2.0@dev",
-        "mockery/mockery": "~0.9",
+        "mockery/mockery": "~0.9 || ~0.0",
         "phpunit/phpunit": "~4.7@dev"
     },
     "autoload" : {
